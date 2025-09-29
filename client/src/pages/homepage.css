@@ -1,0 +1,121 @@
+.homepage {
+    background: linear-gradient(180deg, #c6bcb3 0%, #d8d8d8 20%);
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: start;
+    align-content: start;
+    z-index: 0;
+}
+
+#logo-homepage {
+    width: 100%;
+    height: 100%;
+    background-image: url('../../public/img/logo.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 30vw;
+    position: absolute;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+@media only screen and (max-width: 600px) {
+    #logo-homepage {
+        background-size: 80vw;
+    }
+} 
+
+.homepage a {
+    margin: 20px;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    gap: 5px;
+    color: black;
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.homepage a:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+.homepage a:active{
+    scale: 95%;
+}
+
+.homepage a .logo {
+    width: 100px;
+    height: 100px;
+    background-size: 100px;
+}
+
+.navbar-pagine {
+    width: 100%; 
+    background: linear-gradient(90deg, #9ba2c8 0%, #142740 100%) !important;
+    display: flex;
+    align-items: center;
+    padding-inline: 20px;
+    gap: 20px;
+    height: 60px;
+    overflow-x: auto;
+    flex-shrink: 0;
+}
+
+.navbar-pagine a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    border-radius: 4px;
+    padding-inline: 5px;
+    white-space: nowrap;
+}
+.navbar-pagine a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.navbar-pagine a:active {
+    scale: 95%;
+}
+.navbar-pagine a[class~="active"] {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bg-white-transparent {
+    background-color: rgba(255, 255, 255, 0.9) 
+}
+
+.under-navbar-pagine {
+    flex-grow: 1;
+    overflow-y: hidden
+}
+
+.table-container {
+    height: calc(100% - 40px);
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.genera-pdf-button {
+    width: 100%;
+    height: 100%;
+    color: #fafafa;
+    background-color: rgb(147,153,185);
+    border: none;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.genera-pdf-button:hover {
+    background-color: rgb(127, 133, 165);
+}
+

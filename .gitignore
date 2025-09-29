@@ -1,0 +1,7 @@
+.env
+server/.env
+client/build
+client/build.zip
+client/.git
+node_modules/
+client/node_modules/

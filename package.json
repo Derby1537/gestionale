@@ -1,0 +1,24 @@
+{
+  "name": "database-gestionale",
+  "version": "1.0.0",
+  "main": "/server/server.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "client": "cd client && npm run start",
+    "server": "cd server && nodemon server.js --dev",
+    "deploy": "cd client && npm run build && cd .. && cd server && node server.js",
+    "build": "cd client && npm run build && zip -r build.zip build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "qrcode.react": "^4.2.0"
+  }
+}

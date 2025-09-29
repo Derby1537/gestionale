@@ -1,0 +1,19 @@
+.navbar {
+    background: linear-gradient(90deg, #9ba2c8 0%, #142740 100%);
+    background-color: #9ba2c8;
+}
+
+.searchbar-button {
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.user-button {
+    text-decoration: none;
+}
+
+.user-button button {
+    border-radius: 5px;
+    background-color: white;
+}

@@ -1,0 +1,29 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.main-container {
+    width: 100%;
+    height: calc(100vh - 81px);
+    padding: 10px;
+}
+
+.inner-main-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+.bg-primary {
+    background-color: #9ba2c8 !important;
+    border-color: #9ba2c8 !important;
+}
+
+.btn-primary {
+    background-color: #9ba2c8 !important;
+    border-color: #9ba2c8 !important;
+}
+

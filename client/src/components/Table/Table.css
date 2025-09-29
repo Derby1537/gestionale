@@ -1,0 +1,51 @@
+.table-row {
+    width: 100%;
+    gap: 2px;
+    min-height: 40px;
+    height: 40px;
+}
+
+.table-header {
+    font-size: 1rem;
+    text-align: center;
+    background-color: rgb(212, 212, 212);
+    padding-block: 10px;
+    margin-inline: 2px;
+    border: 3px solid white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.table-data {
+    font-size: 1rem;
+    text-align: center;
+    padding-block: 5px;
+    border: 3px solid white;
+}
+
+.table-data-odd {
+    background-color: rgb(212, 212, 212);
+}
+
+.pagination button {
+    border-radius: 5px;
+    border: 1px solid transparent;
+    background-color: white;
+    box-shadow: 0 0 1px rgb(200, 200, 200);
+    padding-inline: 10px;
+    padding-block: 6px;
+    color: rgb(13, 110, 253);
+}
+.pagination button[class~="bg-primary"] {
+    color: white;
+    background-color: rgb(13, 110, 253) !important;
+    border: 1px solid rgb(13, 110, 253) !important;
+}
+
+.pagination button:disabled {
+    background-color: rgb(240, 240, 240);
+    color: rgb(33, 37, 41)
+}
+
+
