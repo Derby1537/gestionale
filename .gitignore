@@ -1,6 +1,6 @@
 .env
 server/.env
-client/build
+# client/build
 client/build.zip
 client/.git
 node_modules/
