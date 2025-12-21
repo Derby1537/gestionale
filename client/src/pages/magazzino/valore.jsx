@@ -249,6 +249,7 @@ const ValoreMagazzino = () => {
             if (!response.ok) throw response;
             const { data } = await response.json();
 
+            generateCSV(data);
 
             const totale = data.reduce((previous, current) => {
                 return previous + (parseFloat(current.valore_in_magazzino) || 0);
@@ -400,6 +401,76 @@ const ValoreMagazzino = () => {
         }
     }
 
+    const generateCSV = (data) => {
+        const headers = [
+            "Articolo",
+            "Colore esterno",
+            "Descrizione colore esterno",
+            "Colore interno",
+            "Descrizione colore interno",
+            "Valore in magazzino",
+            "Valore in ordine",
+            "Quantità",
+            "Lunghezza barra",
+            "Fornitore",
+            "Descrizione",
+        ];
+
+        const totaleValoreMagazzino = data.reduce(
+            (sum, row) => sum + (parseFloat(row.valore_in_magazzino) || 0),
+            0
+        );
+
+        const rows = data.map(row => ([
+            `${row.id_prodotto}*${row.id_colore_esterno}${row.id_colore_interno || ""}*`,
+            row.id_colore_esterno,
+            row.descrizione_colore_esterno,
+            row.id_colore_interno || "",
+            row.descrizione_colore_interno || "",
+            row.valore_in_magazzino,
+            row.valore_in_ordine,
+            row.quantita_in_magazzino,
+            row.lunghezza_barra,
+            row.fornitore,
+            row.descrizione,
+        ]));
+
+        const finalRow = [
+            "TOTALE",
+            "",
+            "",
+            "",
+            "",
+            totaleValoreMagazzino,
+            "",
+            "",
+            "",
+            "",
+            "",
+        ]
+        rows.push(finalRow);
+
+        const escape = (value) =>
+            `"${String(value ?? "").replace(/"/g, '""')}"`;
+
+        const csvContent = [
+            headers.map(escape).join(";"),
+            ...rows.map(r => r.map(escape).join(";"))
+        ].join("\n");
+
+        const blob = new Blob([csvContent], {
+            type: "text/csv;charset=utf-8;"
+        });
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `magazzino_${new Date().toISOString().slice(0,10)}.csv`;
+        a.click();
+
+        URL.revokeObjectURL(url);
+    }
+
     useEffect(() => {
         checkAuth();
 
@@ -428,8 +499,8 @@ const ValoreMagazzino = () => {
                 <div className="row h-100">
                     <div 
                         className="
-                            col-12 col-lg-4 
-                            text-white p-1
+                        col-12 col-lg-4 
+                        text-white p-1
                         "
                     >
                         <div className="w-100 h-100 d-flex justify-content-center align-items-center" style={{backgroundColor: "rgb(20,39,64)", minHeight: "60px"}}>
