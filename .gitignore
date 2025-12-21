@@ -1,5 +1,6 @@
 .env
 server/.env
+.DS_Store
 # client/build
 client/build.zip
 client/.git
