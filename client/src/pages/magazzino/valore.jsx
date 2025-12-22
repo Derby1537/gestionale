@@ -427,7 +427,10 @@ const ValoreMagazzino = () => {
             row.descrizione_colore_esterno,
             row.id_colore_interno || "",
             row.descrizione_colore_interno || "",
-            row.valore_in_magazzino,
+            Number(row.valore_in_magazzino).toLocaleString("it-IT", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }),
             row.valore_in_ordine,
             row.quantita_in_magazzino,
             row.lunghezza_barra,
@@ -441,7 +444,10 @@ const ValoreMagazzino = () => {
             "",
             "",
             "",
-            totaleValoreMagazzino,
+            Number(totaleValoreMagazzino).toLocaleString("it-IT", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }),
             "",
             "",
             "",
