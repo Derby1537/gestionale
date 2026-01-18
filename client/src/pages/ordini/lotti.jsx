@@ -32,7 +32,6 @@ const Lotti = () => {
         infissi: queryParams.get("infissi") || "",
         cassonetti: queryParams.get("cassonetti") || "",
         profilo: queryParams.get("profilo") || "",
-        inizio_produzione: queryParams.get("inizio_produzione") || "",
     }
     const [filters, setFilters] = useState(defaultFilters)
     const defaultNewScarico = {
@@ -40,8 +39,6 @@ const Lotti = () => {
         errore_lotto: "",
         nome: "",
         profilo: "",
-        inizio_produzione: "",
-        errore_inizio_produzione: "",
     };
     const [newScarico, setNewScarico] = useState(defaultNewScarico);
     const titoli = [
@@ -51,7 +48,7 @@ const Lotti = () => {
         "N. infissi", 
         "N. cassonetti", 
         "Profilo" + (queryParams.get("profilo") ? '*':''),
-        "Inizio produzione" + (queryParams.get("inizio_produzione")? '*':''), 
+        "Data consegna", 
         "Comandi"
     ]
 
@@ -140,7 +137,6 @@ const Lotti = () => {
             setNewScarico((prevFilters) => ({
                 ...prevFilters,
                 errore_lotto: "",
-                errore_inizio_produzione: "",
                 [error.field]: error.message,
             }))
             return false;
@@ -186,18 +182,6 @@ const Lotti = () => {
                 />
                 <br/>
 
-                <label htmlFor="inizio_produzione">Data inizio produzione</label><br/>
-                <input 
-                    type="date" 
-                    placeholder={new Date().getDate()} 
-                    name="inizio_produzione"
-                    id="inizio_produzione"
-                    className="form-control"
-                    onChange={handleAddChange}
-                    value={newScarico.inizio_produzione}
-                />
-                <div className="text-danger"id="errore_data">{newScarico.errore_inizio_produzione}</div>
-                <br/>
             </div>
         );
     }
@@ -241,16 +225,6 @@ const Lotti = () => {
                 />
                 <br/>
 
-                <label htmlFor="inizio_produzione">Inizio produzione</label><br/>
-                <input 
-                    type="date" 
-                    name="inizio_produzione"
-                    id="inizio_produzione"
-                    className="form-control"
-                    onChange={handleFilterChange}
-                    value={filters.inizio_produzione}
-                />
-                <br/>
             </div>
         );
     }
@@ -274,7 +248,6 @@ const Lotti = () => {
                 "numero_infissi", 
                 "numero_cassonetti", 
                 "profilo", 
-                "inizio_produzione", 
             ];
             const scarichi = data.map(obj => {
                 obj.id = obj.numero_lotto;
@@ -284,9 +257,6 @@ const Lotti = () => {
                         newObj[key] = obj[key];
                         if(key === "numero_infissi" || key === "numero_cassonetti") {
                             newObj[key] += ' Pz'
-                        }
-                        else if(key === "inizio_produzione") {
-                            newObj[key] = new Date(obj[key]).toLocaleDateString("it-It");
                         }
                         else if (key === "ordini") {
                             if (obj[key].length === 0) {
@@ -302,7 +272,7 @@ const Lotti = () => {
                                         ordine.numero_infissi + " Pz",
                                         ordine.numero_cassonetti + " Pz",
                                         ordine.profilo,
-                                        "",
+                                        ordine.data_consegna ? new Date(ordine.data_consegna).toLocaleDateString("it-IT") : "",
                                         (
                                             <div className="d-flex justify-content-center gap-1 px-0 ms-0">
                                                 <BottoneRimuoviOrdine 
@@ -320,6 +290,7 @@ const Lotti = () => {
                         }
                     }
                 })
+                newObj['data_consegna'] = (<></>)
                 newObj['comandi'] = (
                     <div 
                         className="d-flex justify-content-center gap-1 px-0 ms-0" 
