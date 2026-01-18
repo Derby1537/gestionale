@@ -33,6 +33,7 @@ router.get("/", async (req, res) => {
         let queryString = `
 SELECT 
     lo.numero_ordine,
+    lo.data_consegna,
     lo.numero_cliente,
     lo.data,
     lo.ok_prod,
@@ -178,6 +179,7 @@ router.post("/", async (req, res) => {
             return res.status(401).send("Unauthorized");
         }
         const numero_ordine = req.body.numero_ordine?.trim();
+        let data_consegna = req.body.data_consegna?.trim();
         const numero_cliente = req.body.numero_cliente || '';
         const id_colore_esterno = req.body.id_colore_esterno?.trim();
         const id_colore_interno = req.body.id_colore_interno?.trim();
@@ -204,6 +206,10 @@ router.post("/", async (req, res) => {
             return res.status(400).send({ field: "errore_infissi", message: "Numero infissi invalido" });
         }
 
+        if (data_consegna) {
+            data_consegna = new Date(data_consegna);
+        }
+
         let [rows] = await db.query("SELECT numero_ordine FROM lista_ordini WHERE numero_ordine = ?", [numero_ordine]);
         if(rows.length > 0) {
             return res.status(400).send({ field: "errore_numero_ordine", message: "Numero d'ordine già presente nel database" })
@@ -219,8 +225,8 @@ router.post("/", async (req, res) => {
         }
 
         await db.execute(
-            `INSERT INTO lista_ordini (numero_ordine, numero_cliente, id_colore_esterno, id_colore_interno, numero_infissi, numero_cassonetti, ok_prod, data) VALUES (?,?,?,?,?,?,?,DEFAULT)`
-            , [numero_ordine, numero_cliente, id_colore_esterno, id_colore_interno, numero_infissi, numero_cassonetti, ok_prod ? true : false]);
+            `INSERT INTO lista_ordini (numero_ordine, data_consegna, numero_cliente, id_colore_esterno, id_colore_interno, numero_infissi, numero_cassonetti, ok_prod, data) VALUES (?,?,?,?,?,?,?,?,DEFAULT)`
+            , [numero_ordine, data_consegna, numero_cliente, id_colore_esterno, id_colore_interno, numero_infissi, numero_cassonetti, ok_prod ? true : false]);
 
 
         res.status(200).send({ message: "Ordine aggiunto con successo" });
@@ -237,6 +243,7 @@ router.post("/:numero_ordine", async (req, res) => {
             return res.status(401).send("Unauthorized");
         }
         const numero_ordine = req.params.numero_ordine;
+        let data_consegna = req.body.data_consegna?.trim();
         const numero_cliente = req.body.numero_cliente || '';
         const id_colore_esterno = req.body.id_colore_esterno?.trim();
         const id_colore_interno = req.body.id_colore_interno?.trim();
@@ -262,6 +269,10 @@ router.post("/:numero_ordine", async (req, res) => {
         if (numero_cassonetti === 0 && numero_infissi === 0) {
             return res.status(400).send({ field: "errore_infissi", message: "Numero infissi invalido" });
         }
+        console.log(req.body.data_consegna);
+        if (data_consegna) {
+            data_consegna = new Date(data_consegna);
+        }
 
         [rows] = await db.query("SELECT id FROM colori WHERE id = ?", [id_colore_esterno]);
         if (rows.length === 0) {
@@ -271,11 +282,10 @@ router.post("/:numero_ordine", async (req, res) => {
         if (rows.length === 0) {
             return res.status(400).send({ field: "errore_id_colore_interno", message: "Id colore interno non presente in magazzino" })
         }
-        console.log(numero_ordine);
 
         [rows] = await db.execute(
-            `UPDATE lista_ordini SET numero_cliente = ?, id_colore_esterno = ?, id_colore_interno = ?, numero_infissi = ?, numero_cassonetti = ?, ok_prod = ? WHERE numero_ordine = ?`
-            , [numero_cliente, id_colore_esterno, id_colore_interno, numero_infissi, numero_cassonetti, ok_prod ? true : false, numero_ordine]);
+            `UPDATE lista_ordini SET numero_cliente = ?, data_consegna = ?, id_colore_esterno = ?, id_colore_interno = ?, numero_infissi = ?, numero_cassonetti = ?, ok_prod = ? WHERE numero_ordine = ?`
+            , [numero_cliente, data_consegna || null, id_colore_esterno, id_colore_interno, numero_infissi, numero_cassonetti, ok_prod ? true : false, numero_ordine]);
 
         if (rows.affectedRows === 0) {
             return res.status(400).send({ field: "errore_numero_ordine", message: "Numero d'ordine non presente in magazzino" })
