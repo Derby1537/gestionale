@@ -59,6 +59,7 @@ const HomePage = () => {
 
     const [newScarico, setNewScarico] = useState({
         numero_ordine: "",
+        data_consegna: "",
         errore_numero_ordine: "",
         numero_cliente: "",
         id_colore_esterno: queryParams.get("id_colore_esterno") || "",
@@ -86,6 +87,7 @@ const HomePage = () => {
     })
     const titoli = [
         "N. ordine" + (queryParams.get("q") ? '*':''), 
+        "Data consegna" + (queryParams.get("data_consegna") ? '*':''), 
         "N. cliente" + (queryParams.get("numero_cliente") ? '*':''), 
         "Data" + (queryParams.get("data") ? '*':''), 
         "Ok prod" + "*", 
@@ -393,6 +395,18 @@ const HomePage = () => {
                 <div className="text-danger" id="errore_numero_ordine">{newScarico.errore_numero_ordine}</div>
                 <br/>
 
+                <label htmlFor="data_consegna">Data consegna</label><br/>
+                <input 
+                    type="date" 
+                    name="data_consegna"
+                    id="data_consegna"
+                    className="form-control"
+                    onChange={handleAddChange}
+                    value={newScarico.data_consegna}
+                />
+                <div className="text-danger" id="errore_data_consegna">{newScarico.errore_data_consegna}</div>
+                <br/>
+
                 <label htmlFor="numero_cliente">Numero cliente</label><br/>
                 <input 
                     type="text" 
@@ -494,6 +508,7 @@ const HomePage = () => {
             const data = dati.data;
             const valoriDaTenere = [
                 "numero_ordine", 
+                "data_consegna", 
                 "numero_cliente", 
                 "data", 
                 "ok_prod", 
@@ -520,7 +535,8 @@ const HomePage = () => {
                         }
                         else if (key === "data" ||
                                  key === "consegna_vetri" || 
-                                 key === "consegna_profili") {
+                                 key === "consegna_profili" ||
+                                 key === "data_consegna") {
                             if (obj[key]) {
                                 newObj[key] = new Date(obj[key]).toLocaleDateString("it-It");
                             }
