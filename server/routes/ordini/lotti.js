@@ -16,7 +16,6 @@ router.get("/", async (req, res) => {
         const {
             lotto,
             nome_lotto,
-            inizio_produzione,
             profilo,
         } = req.query;
 
@@ -33,10 +32,6 @@ WHERE 1 = 1
         if (nome_lotto?.trim()) {
             queryString += " AND nome LIKE ?";
             parameters.push(`%${nome_lotto}%`);
-        }
-        if (inizio_produzione) {
-            queryString += " AND inizio_produzione = ?";
-            parameters.push(formatDate(new Date(inizio_produzione)));
         }
         if (profilo?.trim()) {
             queryString += " AND profilo LIKE ?";
@@ -112,13 +107,9 @@ router.post("/aggiungi/nuovo_lotto", async (req, res) => {
         const numero_lotto = req.body.numero_lotto ? parseInt(req.body.numero_lotto) : null;
         const nome = req.body.nome || '';
         const profilo = req.body.profilo || '';
-        const inizio_produzione = req.body.inizio_produzione ? new Date(req.body.inizio_produzione) : null;
 
         if(!numero_lotto) {
             return res.status(400).send({ field: "errore_lotto", message: "Numero lotto necessario" });
-        }
-        if(!inizio_produzione) {
-            return res.status(400).send({ field: "errore_inizio_produzione", message: "Data inizio produzione necessaria" });
         }
 
         let [rows] = await db.query("SELECT * FROM lotto WHERE numero_lotto = ?", [numero_lotto]);
@@ -127,8 +118,8 @@ router.post("/aggiungi/nuovo_lotto", async (req, res) => {
         }
 
         await db.execute(
-            `INSERT INTO lotto (numero_lotto, nome, profilo, inizio_produzione) VALUES (?,?,?,?)`
-            , [numero_lotto, nome, profilo, inizio_produzione]);
+            `INSERT INTO lotto (numero_lotto, nome, profilo) VALUES (?,?,?)`
+            , [numero_lotto, nome, profilo]);
 
 
         res.status(200).send({ message: "Lotto aggiunto con successo" });
@@ -148,13 +139,9 @@ router.post("/modifica/:id", async (req, res) => {
         const numero_lotto = req.body.numero_lotto ? parseInt(req.body.numero_lotto) : null;
         const nome = req.body.nome || '';
         const profilo = req.body.profilo || '';
-        const inizio_produzione = req.body.inizio_produzione ? new Date(req.body.inizio_produzione) : null;
 
         if(!numero_lotto) {
             return res.status(400).send({ field: "errore_lotto", message: "Numero lotto necessario" });
-        }
-        if(!inizio_produzione) {
-            return res.status(400).send({ field: "errore_inizio_produzione", message: "Data inizio produzione necessaria" });
         }
 
         if (numero_lotto != id) {
@@ -165,8 +152,8 @@ router.post("/modifica/:id", async (req, res) => {
         }
 
         [rows] = await db.execute(
-            `UPDATE lotto SET numero_lotto = ?, nome = ?, profilo = ?, inizio_produzione = ? WHERE numero_lotto = ?`
-            , [numero_lotto, nome, profilo, inizio_produzione, id]);
+            `UPDATE lotto SET numero_lotto = ?, nome = ?, profilo = ? WHERE numero_lotto = ?`
+            , [numero_lotto, nome, profilo, id]);
 
         if (rows.affectedRows === 0) {
             return res.status(400).send({ field: "errore_lotto", message: "Numero lotto non presente in magazzino" })
