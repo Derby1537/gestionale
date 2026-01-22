@@ -226,7 +226,7 @@ router.post("/", async (req, res) => {
 
         await db.execute(
             `INSERT INTO lista_ordini (numero_ordine, data_consegna, numero_cliente, id_colore_esterno, id_colore_interno, numero_infissi, numero_cassonetti, ok_prod, data) VALUES (?,?,?,?,?,?,?,?,DEFAULT)`
-            , [numero_ordine, data_consegna, numero_cliente, id_colore_esterno, id_colore_interno, numero_infissi, numero_cassonetti, ok_prod ? true : false]);
+            , [numero_ordine, data_consegna || null, numero_cliente, id_colore_esterno, id_colore_interno, numero_infissi, numero_cassonetti, ok_prod ? true : false]);
 
 
         res.status(200).send({ message: "Ordine aggiunto con successo" });
