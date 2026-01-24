@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Table from "../../components/Table/Table";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useUser } from "../../contexts/UserContext";
@@ -6,6 +6,7 @@ import { useUser } from "../../contexts/UserContext";
 const AggiungiListaOrdini = () => {
     const titles = [
         "Numero ordine", 
+        "Data consegna", 
         "Numero cliente", 
         "Ok prod",
         "Colore esterno", 
@@ -21,6 +22,8 @@ const AggiungiListaOrdini = () => {
         const newRow = {
             numero_ordine: "",
             errore_numero_ordine: "",
+            data_consegna: new Date(),
+            errore_data_consegna: "",
             numero_cliente: "",
             id_colore_esterno: "",
             errore_id_colore_esterno: "",
@@ -107,6 +110,18 @@ const AggiungiListaOrdini = () => {
                     label={row.errore_numero_ordine}
                     value={row.numero_ordine}
                     onChange={(e) => handleInputChange(index, "numero_ordine", e.target.value)}
+                />
+            </OverlayTrigger>
+        ),
+        data_consegna: (
+            <OverlayTrigger placement="top" overlay={<Tooltip className={`${!row.errore_data_consegna ? "d-none":""}`}>{row.errore_data_consegna}</Tooltip>}>
+                <input
+                    name="data_consegna"
+                    className={`form-control text-center bg-transparent ${row.errore_data_consegna ? "border border-danger" : "border-0"}`}
+                    type="date"
+                    label={row.errore_data_consegna}
+                    value={row.data_consegna}
+                    onChange={(e) => handleInputChange(index, "data_consegna", e.target.value)}
                 />
             </OverlayTrigger>
         ),
