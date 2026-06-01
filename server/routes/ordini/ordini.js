@@ -269,7 +269,6 @@ router.post("/:numero_ordine", async (req, res) => {
         if (numero_cassonetti === 0 && numero_infissi === 0) {
             return res.status(400).send({ field: "errore_infissi", message: "Numero infissi invalido" });
         }
-        console.log(req.body.data_consegna);
         if (data_consegna) {
             data_consegna = new Date(data_consegna);
         }

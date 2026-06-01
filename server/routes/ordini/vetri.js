@@ -110,7 +110,6 @@ router.post("/aggiungi", async (req, res) => {
         const numero_vetri = req.body.numero_vetri ? parseInt(req.body.numero_vetri) : 0;
         const data = req.body.data_consegna ? new Date(req.body.data_consegna) : null;
         const consegnato = req.body.consegnato == true ? true : false;
-        console.log(consegnato, req.body.consegnato);
 
         if(!riferimento) {
             return res.status(400).send({ field: "errore_riferimento", message: "Riferimento necessario" });

@@ -274,13 +274,13 @@ app.post("/api/login", async (req, res) => {
 
         const role = user.id == adminId ? "admin" : "user";
 
-        const token = jwt.sign({ userId: user.id, role: role }, process.env.JWT_SECRET || "secretKey", { expiresIn: "1h" } );
+        const token = jwt.sign({ userId: user.id, role: role }, process.env.JWT_SECRET || "secretKey", { expiresIn: "12h" } );
 
         res.cookie("authToken", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
-            maxAge: 3600000
+            maxAge: (((1000 * 60) * 60) * 12)
         })
 
         res.json({ message: "Login avvenuto con successo", username: user.username, role: role })

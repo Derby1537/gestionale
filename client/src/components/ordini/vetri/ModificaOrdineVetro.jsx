@@ -36,7 +36,6 @@ const ModificaOrdineVetro = ({ vetro }) => {
 
     const onKeyDown = (e) => {
         e.stopPropagation();
-        console.log(e.key);
         if (e.key === "Enter") {
             onSubmit();
         }
